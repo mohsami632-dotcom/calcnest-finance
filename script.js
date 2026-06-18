@@ -2,6 +2,38 @@
 
 const TAX_SOURCE_URL = "";
 
+const CURRENCIES = [
+  { code: "INR", name: "Indian Rupee", country: "India", locale: "en-IN" },
+  { code: "USD", name: "US Dollar", country: "United States", locale: "en-US" },
+  { code: "EUR", name: "Euro", country: "Eurozone", locale: "en-IE" },
+  { code: "GBP", name: "British Pound", country: "United Kingdom", locale: "en-GB" },
+  { code: "AED", name: "UAE Dirham", country: "United Arab Emirates", locale: "en-AE" },
+  { code: "SGD", name: "Singapore Dollar", country: "Singapore", locale: "en-SG" },
+  { code: "AUD", name: "Australian Dollar", country: "Australia", locale: "en-AU" },
+  { code: "CAD", name: "Canadian Dollar", country: "Canada", locale: "en-CA" },
+  { code: "JPY", name: "Japanese Yen", country: "Japan", locale: "ja-JP" },
+  { code: "CNY", name: "Chinese Yuan", country: "China", locale: "zh-CN" },
+  { code: "CHF", name: "Swiss Franc", country: "Switzerland", locale: "de-CH" },
+  { code: "NZD", name: "New Zealand Dollar", country: "New Zealand", locale: "en-NZ" },
+  { code: "SAR", name: "Saudi Riyal", country: "Saudi Arabia", locale: "en-SA" },
+  { code: "ZAR", name: "South African Rand", country: "South Africa", locale: "en-ZA" },
+  { code: "HKD", name: "Hong Kong Dollar", country: "Hong Kong", locale: "en-HK" },
+  { code: "KRW", name: "South Korean Won", country: "South Korea", locale: "ko-KR" },
+  { code: "BRL", name: "Brazilian Real", country: "Brazil", locale: "pt-BR" },
+  { code: "MXN", name: "Mexican Peso", country: "Mexico", locale: "es-MX" }
+];
+
+function readStoredCurrency() {
+  try {
+    const stored = localStorage.getItem("calcnest-currency");
+    return CURRENCIES.some((currency) => currency.code === stored) ? stored : "INR";
+  } catch {
+    return "INR";
+  }
+}
+
+let selectedCurrency = readStoredCurrency();
+
 const TAX_CONFIG = {
   new: {
     label: "Sample New Regime (edit for your country)",
@@ -120,7 +152,11 @@ const guideDefaults = {
 
 function formatCurrency(value, decimals = 0) {
   const amount = Number.isFinite(value) ? value : 0;
-  return amount.toLocaleString("en-IN", {
+  const currency = CURRENCIES.find((item) => item.code === selectedCurrency) || CURRENCIES[0];
+  return amount.toLocaleString(currency.locale, {
+    style: "currency",
+    currency: currency.code,
+    currencyDisplay: "narrowSymbol",
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals
   });
@@ -128,7 +164,8 @@ function formatCurrency(value, decimals = 0) {
 
 function formatNumber(value, decimals = 2) {
   const amount = Number.isFinite(value) ? value : 0;
-  return amount.toLocaleString("en-IN", {
+  const currency = CURRENCIES.find((item) => item.code === selectedCurrency) || CURRENCIES[0];
+  return amount.toLocaleString(currency.locale, {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals
   });
@@ -857,35 +894,25 @@ const calculators = [
   },
   {
     id: "currency-converter",
-    title: "Currency Converter UI",
+    title: "Currency Converter",
     icon: "FX",
     category: "Business",
-    description: "Convert between currencies using your own exchange-rate inputs. No live API - update rates manually for accuracy.",
+    description: "Convert any supported currency pair using the current exchange rate you enter.",
     fields: [
       numberField("amount", "Amount", 1000, 0, 1000000000, 1),
       selectField("fromCurrency", "From currency", "USD", currencyOptions()),
-      selectField("toCurrency", "To currency", "INR", currencyOptions()),
-      numberField("INR", "Base value of 1 INR", 1, 0.0001, 1000000, 0.0001),
-      numberField("USD", "Base value of 1 USD", 83, 0.0001, 1000000, 0.01),
-      numberField("EUR", "Base value of 1 EUR", 90, 0.0001, 1000000, 0.01),
-      numberField("GBP", "Base value of 1 GBP", 105, 0.0001, 1000000, 0.01),
-      numberField("AED", "Base value of 1 AED", 22.6, 0.0001, 1000000, 0.01),
-      numberField("SGD", "Base value of 1 SGD", 61.5, 0.0001, 1000000, 0.01)
+      selectField("toCurrency", "To currency", () => selectedCurrency, currencyOptions()),
+      numberField("exchangeRate", "Exchange rate", 1, 0.0000001, 1000000000, 0.0001, "Enter how much 1 source currency is worth in the target currency.")
     ],
-    example: { amount: 1000, fromCurrency: "USD", toCurrency: "INR", INR: 1, USD: 83, EUR: 90, GBP: 105, AED: 22.6, SGD: 61.5 },
+    example: { amount: 1000, fromCurrency: "USD", toCurrency: "INR", exchangeRate: 83 },
     calculate(values) {
-      const rates = { INR: values.INR, USD: values.USD, EUR: values.EUR, GBP: values.GBP, AED: values.AED, SGD: values.SGD };
-      if (Object.values(rates).some((rate) => !Number.isFinite(rate) || rate <= 0)) {
-        throw new Error("All currency rates must be greater than zero.");
-      }
-      const baseAmount = values.amount * rates[values.fromCurrency];
-      const converted = assertFiniteResult(baseAmount / rates[values.toCurrency], "Currency conversion");
+      const converted = assertFiniteResult(values.amount * values.exchangeRate, "Currency conversion");
       return buildResult([
         { label: "Converted amount", value: `${formatNumber(converted, 2)} ${values.toCurrency}`, primary: true },
-        { label: "Base currency equivalent", value: formatCurrency(roundMoney(baseAmount)) },
-        { label: "Applied rate", value: `1 ${values.fromCurrency} = ${formatNumber(rates[values.fromCurrency], 4)} base units` }
-      ], "Static estimate mode. Update rates manually before relying on the conversion.", {
-        note: "Static estimate mode. Update rates manually."
+        { label: "Source amount", value: `${formatNumber(values.amount, 2)} ${values.fromCurrency}` },
+        { label: "Applied rate", value: `1 ${values.fromCurrency} = ${formatNumber(values.exchangeRate, 6)} ${values.toCurrency}` }
+      ], `Converted ${formatNumber(values.amount, 2)} ${values.fromCurrency} at your entered exchange rate.`, {
+        note: "Manual-rate mode. Confirm the latest exchange rate and any provider fees before relying on this estimate."
       });
     }
   }
@@ -925,7 +952,7 @@ function loanPreset(id, title, icon, label, principal, interestRate, tenureYears
 }
 
 function currencyOptions() {
-  return [["INR", "INR"], ["USD", "USD"], ["EUR", "EUR"], ["GBP", "GBP"], ["AED", "AED"], ["SGD", "SGD"]];
+  return CURRENCIES.map((currency) => [currency.code, `${currency.code} - ${currency.name}`]);
 }
 
 function modeLabel(mode) {
@@ -956,7 +983,7 @@ function createGuide(calc) {
     cagr: "CAGR = ((Ending / Beginning)^(1 / Years) - 1) x 100",
     roi: "ROI = ((Gain - Cost) / Cost) x 100",
     percentage: "Use the selected percentage identity for the current mode.",
-    "currency-converter": "Converted amount = amount x source rate / target rate."
+    "currency-converter": "Converted amount = source amount x entered exchange rate."
   };
   return {
     formula: formulaById[calc.id] || "Uses standard finance formulas for the selected inputs.",
@@ -974,6 +1001,7 @@ const state = {
   activeCategory: "All",
   search: "",
   activeCalculator: null,
+  currency: selectedCurrency,
   results: {}
 };
 
@@ -987,6 +1015,8 @@ document.addEventListener("DOMContentLoaded", () => {
   bindSearch();
   bindCardNavigation();
   initDarkMode();
+  initCurrencyChooser();
+  initHeroVisual();
   initBackToTop();
   initMobileNav();
   initFooterYear();
@@ -1012,6 +1042,131 @@ function initDarkMode() {
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("calcnest-theme", next);
   });
+}
+
+function initHeroVisual() {
+  const image = document.getElementById("heroVisual");
+  const wrapper = document.getElementById("heroVisualWrap");
+  const fallback = document.getElementById("heroVisualFallback");
+  if (!image || !wrapper || !fallback) return;
+  const showFallback = () => {
+    wrapper.classList.add("image-unavailable");
+    fallback.setAttribute("aria-hidden", "false");
+    image.setAttribute("aria-hidden", "true");
+  };
+  const showImage = () => {
+    wrapper.classList.remove("image-unavailable");
+    fallback.setAttribute("aria-hidden", "true");
+    image.removeAttribute("aria-hidden");
+  };
+  image.addEventListener("load", showImage);
+  image.addEventListener("error", showFallback);
+  if (image.complete) {
+    if (image.naturalWidth > 0) showImage();
+    else showFallback();
+  }
+}
+
+function initCurrencyChooser() {
+  const dialog = document.getElementById("currencyDialog");
+  const trigger = document.getElementById("currencyTrigger");
+  const search = document.getElementById("currencySearch");
+  const converterButton = document.getElementById("openCurrencyConverter");
+  if (!dialog || !trigger || !search) return;
+
+  updateCurrencyUi();
+  renderCurrencyOptions();
+
+  trigger.addEventListener("click", () => {
+    if (typeof dialog.showModal === "function") {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute("open", "");
+    }
+    search.value = "";
+    renderCurrencyOptions();
+    window.setTimeout(() => search.focus(), 0);
+  });
+
+  search.addEventListener("input", () => renderCurrencyOptions(search.value));
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close("cancel");
+  });
+  dialog.addEventListener("close", () => {
+    search.value = "";
+  });
+
+  if (converterButton) {
+    converterButton.addEventListener("click", () => {
+      dialog.close("converter");
+      openCalculator("currency-converter", { scroll: true });
+      history.pushState(null, "", "#currency-converter");
+    });
+  }
+}
+
+function renderCurrencyOptions(query = "") {
+  const container = document.getElementById("currencyOptions");
+  const empty = document.getElementById("currencyEmpty");
+  if (!container || !empty) return;
+  const normalized = query.trim().toLowerCase();
+  const matches = CURRENCIES.filter((currency) => (
+    !normalized || `${currency.code} ${currency.name} ${currency.country}`.toLowerCase().includes(normalized)
+  ));
+  container.innerHTML = matches.map((currency) => {
+    const symbol = currencySymbol(currency.code, currency.locale);
+    return `
+      <label class="currency-option">
+        <input type="radio" name="siteCurrency" value="${currency.code}" ${currency.code === selectedCurrency ? "checked" : ""}>
+        <span class="currency-symbol" aria-hidden="true">${escapeHtml(symbol)}</span>
+        <span class="currency-option-copy">
+          <strong>${currency.code} - ${currency.name}</strong>
+          <small>${currency.country}</small>
+        </span>
+        <span class="currency-check" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+      </label>`;
+  }).join("");
+  empty.hidden = matches.length > 0;
+  container.querySelectorAll('input[name="siteCurrency"]').forEach((input) => {
+    input.addEventListener("change", () => setSelectedCurrency(input.value));
+  });
+}
+
+function currencySymbol(code, locale) {
+  const parts = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: code,
+    currencyDisplay: "narrowSymbol",
+    maximumFractionDigits: 0
+  }).formatToParts(0);
+  return parts.find((part) => part.type === "currency")?.value || code;
+}
+
+function setSelectedCurrency(code) {
+  if (!CURRENCIES.some((currency) => currency.code === code)) return;
+  selectedCurrency = code;
+  state.currency = code;
+  try {
+    localStorage.setItem("calcnest-currency", code);
+  } catch {
+    // The selected currency still applies for the current browser session.
+  }
+  updateCurrencyUi();
+  const activeCalc = calculators.find((calc) => calc.id === state.activeCalculator);
+  const activeForm = activeCalc ? document.getElementById(`${activeCalc.id}-form`) : null;
+  if (activeCalc && activeForm && state.results[activeCalc.id]) {
+    calculateCurrent(activeCalc, activeForm);
+  }
+}
+
+function updateCurrencyUi() {
+  const buttonCode = document.getElementById("currencyButtonCode");
+  const heroSample = document.getElementById("heroCurrencySample");
+  if (buttonCode) buttonCode.textContent = selectedCurrency;
+  if (heroSample) heroSample.textContent = formatCurrency(583500);
+  document.documentElement.setAttribute("data-currency", selectedCurrency);
 }
 
 function initBackToTop() {
@@ -1288,6 +1443,13 @@ function fieldMarkup(calcId, field) {
 }
 
 function updateConditionalFields(calc, form) {
+  if (calc.id === "currency-converter") {
+    const from = form.elements.fromCurrency.value;
+    const to = form.elements.toCurrency.value;
+    const rateLabel = form.elements.exchangeRate?.closest(".field")?.querySelector("label");
+    if (rateLabel) rateLabel.textContent = `Exchange rate (1 ${from} = ? ${to})`;
+    return;
+  }
   if (calc.id !== "percentage") return;
   const mode = form.elements.mode.value;
   const visibleByMode = {
