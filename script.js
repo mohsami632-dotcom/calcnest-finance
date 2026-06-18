@@ -1016,6 +1016,7 @@ document.addEventListener("DOMContentLoaded", () => {
   bindCardNavigation();
   initDarkMode();
   initCurrencyChooser();
+  initCurrencyCoachmark();
   initHeroVisual();
   initBackToTop();
   initMobileNav();
@@ -1103,6 +1104,69 @@ function initCurrencyChooser() {
       history.pushState(null, "", "#currency-converter");
     });
   }
+}
+
+function initCurrencyCoachmark() {
+  const coachmark = document.getElementById("currencyCoachmark");
+  const trigger = document.getElementById("currencyTrigger");
+  const action = document.getElementById("currencyCoachmarkAction");
+  const close = document.getElementById("currencyCoachmarkClose");
+  if (!coachmark || !trigger || !action || !close) return;
+
+  let hasSeenCoachmark = false;
+  try {
+    hasSeenCoachmark = localStorage.getItem("calcnest-currency-coachmark-seen") === "true";
+  } catch {
+    hasSeenCoachmark = false;
+  }
+  if (hasSeenCoachmark) return;
+
+  const positionCoachmark = () => {
+    if (coachmark.hidden) return;
+    const triggerRect = trigger.getBoundingClientRect();
+    const coachmarkWidth = coachmark.offsetWidth;
+    const viewportPadding = 8;
+    const left = Math.min(
+      window.innerWidth - coachmarkWidth - viewportPadding,
+      Math.max(viewportPadding, triggerRect.right - coachmarkWidth)
+    );
+    const top = triggerRect.bottom + 12;
+    const arrowLeft = Math.min(
+      coachmarkWidth - 20,
+      Math.max(20, triggerRect.left + triggerRect.width / 2 - left - 6)
+    );
+    coachmark.style.left = `${left}px`;
+    coachmark.style.top = `${top}px`;
+    coachmark.style.setProperty("--coachmark-arrow-left", `${arrowLeft}px`);
+  };
+
+  const dismiss = () => {
+    coachmark.hidden = true;
+    trigger.classList.remove("coachmark-target");
+    try {
+      localStorage.setItem("calcnest-currency-coachmark-seen", "true");
+    } catch {
+      // Dismissal still applies until the page is refreshed.
+    }
+    window.removeEventListener("resize", positionCoachmark);
+  };
+
+  window.setTimeout(() => {
+    coachmark.hidden = false;
+    trigger.classList.add("coachmark-target");
+    positionCoachmark();
+  }, 700);
+
+  action.addEventListener("click", () => {
+    dismiss();
+    trigger.click();
+  });
+  close.addEventListener("click", dismiss);
+  trigger.addEventListener("click", dismiss);
+  window.addEventListener("resize", positionCoachmark);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !coachmark.hidden) dismiss();
+  });
 }
 
 function renderCurrencyOptions(query = "") {
