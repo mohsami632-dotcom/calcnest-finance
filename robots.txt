@@ -1,0 +1,13 @@
+# CalcNest Finance — robots.txt
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://calcnest.finance/sitemap.xml
+
+# Block any admin or test paths if added later
+Disallow: /admin/
+Disallow: /test/
+Disallow: /scratch/

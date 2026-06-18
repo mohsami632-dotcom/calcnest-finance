@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CalcNest Finance - Free Financial Calculators</title>
+    <meta name="description" content="CalcNest Finance offers free EMI, SIP, FD, GST, income tax, loan, salary, investment, retirement, CAGR, ROI, and currency calculators for personal and business finance.">
+    <meta name="keywords" content="EMI calculator, SIP calculator, FD calculator, GST calculator, income tax calculator, loan calculator, investment calculator, compound interest, currency converter, retirement calculator">
+    <meta property="og:title" content="CalcNest Finance - Financial Calculator Hub">
+    <meta property="og:description" content="Plan loans, taxes, investments, savings, salary, retirement, and personal finance decisions with free browser-based calculators.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CalcNest Finance">
+    <meta name="theme-color" content="#0f6bff">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f6bff'/%3E%3Ctext x='32' y='39' font-size='22' font-family='Arial,sans-serif' font-weight='700' text-anchor='middle' fill='white'%3ECN%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#calculatorWorkspace">Skip to calculators</a>
+
+    <!-- Back to top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+
+    <header class="site-header" id="top">
+      <nav class="nav container" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="CalcNest Finance home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+          </span>
+          <span>
+            <strong>CalcNest Finance</strong>
+            <small>Financial calculator hub</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#calculators">Calculators</a>
+          <a href="#popular">Popular</a>
+          <a href="#guides">Guides</a>
+          <a href="#disclaimer">Disclaimer</a>
+        </div>
+        <div class="nav-actions">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+            <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button class="nav-mobile-toggle" id="navMobileToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero section">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="hero-badge">
+              <span class="hero-badge-dot"></span>
+              Browser-only &middot; No login &middot; 100% private
+            </div>
+            <h1>Free Financial Calculators for <span class="hero-highlight">Smarter</span> Money Decisions</h1>
+            <p class="hero-lede">
+              Estimate EMI, SIP, FD maturity, GST, income tax, salary take-home,
+              retirement corpus, and investment returns - 20 precision calculators built for everyone.
+            </p>
+            <form class="hero-search" role="search" aria-label="Search calculators">
+              <label class="sr-only" for="globalSearch">Search calculators</label>
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="globalSearch" type="search" placeholder="Search EMI, SIP, GST, FD, retirement..." autocomplete="off" spellcheck="false">
+              <button type="button" id="clearSearch" aria-label="Clear search">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </form>
+            <div class="hero-actions">
+              <a class="button primary" href="#calculators">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                Explore calculators
+              </a>
+              <a class="button secondary" href="#popular">View popular tools</a>
+            </div>
+            <!-- Stats bar -->
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <strong>20</strong>
+                <span>Calculators</span>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat">
+                <strong>6</strong>
+                <span>Categories</span>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat">
+                <strong>0</strong>
+                <span>Data collected</span>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat">
+                <strong>Free</strong>
+                <span>Forever</span>
+              </div>
+            </div>
+          </div>
+          <aside class="hero-panel" aria-label="Quick finance snapshot">
+            <div class="hero-visual-wrap">
+              <img class="hero-visual" src="assets/finance-dashboard.png" alt="Abstract financial dashboard with calculator cards and growth charts" width="1792" height="1024" loading="eager">
+              <div class="hero-visual-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="hero-metric-row">
+              <div class="metric-card">
+                <span class="metric-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><rect x="7" y="11" width="3" height="5" rx="1"/><rect x="12" y="8" width="3" height="8" rx="1"/><rect x="17" y="4" width="3" height="12" rx="1"/></svg>
+                </span>
+                <div>
+                  <span class="metric-label">Most used</span>
+                  <strong class="metric-value">EMI + SIP</strong>
+                  <small>Loans and investing in one place</small>
+                </div>
+              </div>
+              <div class="metric-card">
+                <span class="metric-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v2"/></svg>
+                </span>
+                <div>
+                  <span class="metric-label">Privacy</span>
+                  <strong class="metric-value">No login</strong>
+                  <small>Calculations happen in your browser</small>
+                </div>
+              </div>
+              <div class="metric-card accent">
+                <span class="metric-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10l-3-3"/><path d="M17 17H7l3 3"/><path d="M8 11h5a3 3 0 0 1 0 6H8"/><path d="M8 7v10"/></svg>
+                </span>
+                <div>
+                  <span class="metric-label">Currency-ready</span>
+                  <strong class="metric-value">Multi-currency</strong>
+                  <small>Edit rates and tax slabs freely</small>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- CATEGORIES -->
+      <section class="section compact" aria-labelledby="categoriesTitle">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Calculator hub</p>
+            <h2 id="categoriesTitle">Browse by category</h2>
+            <p class="section-sub">Choose a category to filter the calculator list below.</p>
+          </div>
+          <div id="categoryCards" class="category-grid"></div>
+        </div>
+      </section>
+
+      <!-- POPULAR -->
+      <section id="popular" class="section compact alt" aria-labelledby="popularTitle">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Popular calculators</p>
+            <h2 id="popularTitle">Start with the tools people use most</h2>
+            <p class="section-sub">Jump straight into the most frequently used calculators.</p>
+          </div>
+          <div id="popularCards" class="popular-grid"></div>
+        </div>
+      </section>
+
+      <!-- ALL CALCULATORS -->
+      <section id="calculators" class="section" aria-labelledby="allCalculatorsTitle">
+        <div class="container">
+          <div class="section-heading split">
+            <div>
+              <p class="eyebrow">All calculators</p>
+              <h2 id="allCalculatorsTitle">Choose a calculator</h2>
+            </div>
+            <div class="filter-tabs" id="categoryFilter" aria-label="Filter calculators by category"></div>
+          </div>
+          <div id="calculatorCards" class="calculator-grid"></div>
+          <p id="emptySearch" class="empty-state" hidden>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            No calculators match your search.
+          </p>
+        </div>
+      </section>
+
+      <!-- CALCULATOR WORKSPACE -->
+      <section id="calculatorWorkspace" class="section workspace-section" aria-labelledby="workspaceTitle">
+        <div class="container">
+          <div class="section-heading workspace-heading">
+            <div>
+              <p class="eyebrow">Calculator workspace</p>
+              <h2 id="workspaceTitle">Open a calculator</h2>
+            </div>
+            <button class="secondary-action close-workspace-btn" id="closeWorkspaceBtn" hidden aria-label="Close calculator">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Close
+            </button>
+          </div>
+          <article id="calculatorShell" class="calculator-shell" aria-live="polite">
+            <div class="workspace-placeholder">
+              <div class="workspace-placeholder-icon" aria-hidden="true">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+              </div>
+              <h3>No calculator open</h3>
+              <p>Click any calculator card above or use search to find and open a calculator.</p>
+              <a class="button primary" href="#calculators">Browse calculators</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- WHY USE -->
+      <section class="section compact" aria-labelledby="whyTitle">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Why use this site</p>
+            <h2 id="whyTitle">Built for fast, private estimates</h2>
+          </div>
+          <div class="trust-grid">
+            <div class="trust-card">
+              <div class="trust-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <h3>Accurate formulas</h3>
+              <p>Core loan, investment, GST, and percentage formulas are separated from UI rendering and include self-checks for common examples.</p>
+            </div>
+            <div class="trust-card">
+              <div class="trust-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h3>No backend</h3>
+              <p>Your inputs stay in the browser. The project can be hosted as static files without accounts, databases, or paid APIs.</p>
+            </div>
+            <div class="trust-card">
+              <div class="trust-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <h3>Useful outputs</h3>
+              <p>Result cards, explanations, copy buttons, reset buttons, and CSV downloads help you move from estimate to spreadsheet quickly.</p>
+            </div>
+            <div class="trust-card">
+              <div class="trust-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <h3>Instant results</h3>
+              <p>All calculations happen in real-time, entirely within your browser. No waiting, no server round-trips, no delays.</p>
+            </div>
+            <div class="trust-card">
+              <div class="trust-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <h3>Multi-currency</h3>
+              <p>The currency converter lets you enter your own exchange rates so results always reflect the rates you actually use.</p>
+            </div>
+            <div class="trust-card">
+              <div class="trust-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <h3>Export data</h3>
+              <p>Download amortization tables, SIP growth tables, and salary breakdowns as CSV files for use in spreadsheets.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GUIDES -->
+      <section id="guides" class="section guides-section" aria-labelledby="guidesTitle">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Calculator guides and FAQs</p>
+            <h2 id="guidesTitle">Understand the formulas before you decide</h2>
+            <p class="section-sub">Each calculator comes with its formula, an example, and answers to common questions.</p>
+          </div>
+          <div id="guideContent" class="guide-grid"></div>
+        </div>
+      </section>
+
+      <!-- DISCLAIMER -->
+      <section id="disclaimer" class="section compact disclaimer-section" aria-labelledby="disclaimerTitle">
+        <div class="container">
+          <div class="disclaimer-inner">
+            <div class="disclaimer-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <h2 id="disclaimerTitle">Disclaimer</h2>
+              <p>
+                This website provides estimates only and is not financial advice. Tax, loan, investment, and currency assumptions vary by country and can change.
+                Verify important decisions with official government rules, banks, fund providers, or a qualified financial professional.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand-col">
+          <a class="brand footer-brand" href="#top">
+            <span class="brand-mark" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+            </span>
+            <span>
+              <strong>CalcNest Finance</strong>
+              <small>Free financial calculators</small>
+            </span>
+          </a>
+          <p>Free browser-based calculators for personal and business financial planning. No tracking, no login, no live APIs.</p>
+          <p class="footer-note">Tax rules and currency rates vary by country - always verify before making decisions.</p>
+        </div>
+        <div class="footer-links-col">
+          <h2>Calculators</h2>
+          <a href="#calculators" data-filter-link="Loans">Loan calculators</a>
+          <a href="#calculators" data-filter-link="Investments">Investment calculators</a>
+          <a href="#calculators" data-filter-link="Banking">Banking calculators</a>
+          <a href="#calculators" data-filter-link="Tax">Tax calculators</a>
+          <a href="#calculators" data-filter-link="Business">Business tools</a>
+          <a href="#calculators" data-filter-link="Personal Finance">Personal finance</a>
+        </div>
+        <div class="footer-links-col">
+          <h2>Quick links</h2>
+          <a href="#calculators">All calculators</a>
+          <a href="#popular">Popular tools</a>
+          <a href="#guides">Calculator guides</a>
+          <a href="#disclaimer">Disclaimer</a>
+          <a href="about.html">About Us</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+        </div>
+        <div class="footer-links-col">
+          <h2>Popular tools</h2>
+          <a href="#emi" data-calc-link="emi">EMI Calculator</a>
+          <a href="#sip" data-calc-link="sip">SIP Calculator</a>
+          <a href="#income-tax" data-calc-link="income-tax">Income Tax</a>
+          <a href="#fixed-deposit" data-calc-link="fixed-deposit">FD Calculator</a>
+          <a href="#gst" data-calc-link="gst">GST Calculator</a>
+          <a href="#retirement" data-calc-link="retirement">Retirement</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <p>&copy; <span id="footerYear"></span> CalcNest Finance. All estimates are for planning only. &middot; <a href="about.html" style="text-decoration: underline;">About Us</a> &middot; <a href="contact.html" style="text-decoration: underline;">Contact Us</a> &middot; <a href="privacy-policy.html" style="text-decoration: underline; font-weight: 500;">Privacy Policy</a></p>
+          <a href="#top" class="footer-top-link">Back to top</a>
+        </div>
+      </div>
+    </footer>
+
+    <section id="formulaSelfCheck" hidden aria-hidden="true"></section>
+    <script id="faqSchema" type="application/ld+json"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
