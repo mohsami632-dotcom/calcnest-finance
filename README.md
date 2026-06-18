@@ -42,7 +42,7 @@ The same files can also be deployed to Vercel or GitHub Pages as a static site.
 - CAGR Calculator
 - ROI Calculator
 - Percentage Calculator
-- Currency Converter UI
+- Currency Converter
 
 ## Formula notes
 
@@ -56,8 +56,11 @@ The same files can also be deployed to Vercel or GitHub Pages as a static site.
 - CAGR: `((Ending Value / Beginning Value)^(1 / Years) - 1) * 100`
 - ROI: `((Gain - Cost) / Cost) * 100`
 - Inflation: `Future Cost = Present Cost * (1 + inflation)^years`
+- Currency converter: `Converted Amount = Source Amount * Entered Exchange Rate`
 
 The income tax calculator uses editable sample slab JSON. Tax rules vary by country and change over time, so review the JSON before using it for planning.
+
+The header currency chooser controls the symbols and regional number formatting used by financial calculator results. It does not convert the numeric values entered. The currency converter supports all listed currency pairs with a user-entered current rate; no live exchange-rate API is used.
 
 ## Quality and testing
 
@@ -71,7 +74,7 @@ Each calculator has example values, validation, reset, copy result, and CSV down
 
 ## Disclaimer
 
-This website provides estimates only and is not financial advice. Verify tax, loan, investment, insurance, and currency decisions with official rules, product documents, banks, AMCs, or a qualified professional.
+This website provides estimates only and is not financial advice. Verify tax, loan, investment, insurance, and currency decisions with official rules, product documents, financial providers, or a qualified professional.
 
 ## Future improvement ideas
 
